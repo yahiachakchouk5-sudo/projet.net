@@ -1,0 +1,71 @@
+@model ProjetApp.Models.Etudiant
+@{ ViewData["Title"] = "Détails Étudiant"; }
+
+<nav aria-label="breadcrumb" class="mb-3">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a asp-action="Index">Étudiants</a></li>
+        <li class="breadcrumb-item active">@Model.Nom @Model.Prenom</li>
+    </ol>
+</nav>
+
+<div class="row g-4">
+    <div class="col-md-5">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0"><i class="bi bi-person-circle me-2"></i>@Model.Nom @Model.Prenom</h5>
+            </div>
+            <div class="card-body">
+                <dl class="row">
+                    <dt class="col-sm-5">N° Étudiant</dt>
+                    <dd class="col-sm-7"><span class="badge bg-secondary">@Model.NumeroEtudiant</span></dd>
+                    <dt class="col-sm-5">Email</dt>
+                    <dd class="col-sm-7"><a href="mailto:@Model.Email">@Model.Email</a></dd>
+                    <dt class="col-sm-5">Téléphone</dt>
+                    <dd class="col-sm-7">@Model.Telephone</dd>
+                </dl>
+            </div>
+            <div class="card-footer d-flex gap-2">
+                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning btn-sm">
+                    <i class="bi bi-pencil me-1"></i>Modifier
+                </a>
+                <a asp-action="Index" class="btn btn-secondary btn-sm">
+                    <i class="bi bi-arrow-left me-1"></i>Retour
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-7">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-light">
+                <h6 class="mb-0">
+                    <i class="bi bi-clipboard-check me-2"></i>Formations inscrites
+                    <span class="badge bg-primary ms-1">@(Model.Inscriptions?.Count ?? 0)</span>
+                </h6>
+            </div>
+            <ul class="list-group list-group-flush">
+                @if (Model.Inscriptions == null || !Model.Inscriptions.Any())
+                {
+                    <li class="list-group-item text-muted">Aucune inscription.</li>
+                }
+                else
+                {
+                    @foreach (var insc in Model.Inscriptions)
+                    {
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <div>
+                                <strong>@insc.Formation?.Titre</strong><br />
+                                <small class="text-muted">
+                                    <i class="bi bi-calendar me-1"></i>@insc.DateInscription.ToShortDateString()
+                                </small>
+                            </div>
+                            <span class="badge @(insc.Statut == "Confirmée" ? "bg-success" : insc.Statut == "En attente" ? "bg-warning text-dark" : "bg-danger")">
+                                @insc.Statut
+                            </span>
+                        </li>
+                    }
+                }
+            </ul>
+        </div>
+    </div>
+</div>

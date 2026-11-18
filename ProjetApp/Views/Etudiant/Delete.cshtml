@@ -1,0 +1,35 @@
+@model ProjetApp.Models.Etudiant
+@{ ViewData["Title"] = "Supprimer Étudiant"; }
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card border-danger shadow-sm">
+            <div class="card-header bg-danger text-white">
+                <h5 class="mb-0"><i class="bi bi-trash me-2"></i>Confirmer la suppression</h5>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-warning">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                    Voulez-vous vraiment supprimer cet étudiant ?
+                </div>
+                <dl class="row">
+                    <dt class="col-sm-4">N° Étudiant</dt>
+                    <dd class="col-sm-8">@Model.NumeroEtudiant</dd>
+                    <dt class="col-sm-4">Nom</dt>
+                    <dd class="col-sm-8">@Model.Nom @Model.Prenom</dd>
+                    <dt class="col-sm-4">Email</dt>
+                    <dd class="col-sm-8">@Model.Email</dd>
+                </dl>
+            </div>
+            <div class="card-footer d-flex gap-2">
+                <form asp-action="Delete">
+                    <input type="hidden" asp-for="Id" />
+                    <button type="submit" class="btn btn-danger">
+                        <i class="bi bi-trash me-1"></i>Supprimer
+                    </button>
+                </form>
+                <a asp-action="Index" class="btn btn-secondary">Annuler</a>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,42 @@
+@model IEnumerable<ProjetApp.Models.Formateur>
+@{ ViewData["Title"] = "Formateurs"; }
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="mb-0"><i class="bi bi-person-badge text-primary me-2"></i>Formateurs</h2>
+    <a asp-action="Create" class="btn btn-primary">
+        <i class="bi bi-plus-circle me-1"></i>Nouveau Formateur
+    </a>
+</div>
+
+<div class="row row-cols-1 row-cols-md-3 g-4">
+    @foreach (var f in Model)
+    {
+        <div class="col">
+            <div class="card h-100 shadow-sm border-0">
+                <div class="card-body text-center">
+                    <div class="display-6 mb-2 text-primary">
+                        <i class="bi bi-person-circle"></i>
+                    </div>
+                    <h5 class="card-title">@f.Nom @f.Prenom</h5>
+                    <p class="text-muted small mb-1">
+                        <i class="bi bi-mortarboard me-1"></i>@f.Specialite
+                    </p>
+                    <p class="small">
+                        <a href="mailto:@f.Email">@f.Email</a>
+                    </p>
+                    <span class="badge bg-info text-dark">
+                        @(f.Formations != null ? f.Formations.Count : 0) formation(s)
+                    </span>
+                </div>
+                <div class="card-footer bg-transparent d-flex justify-content-center gap-2">
+                    <a asp-action="Edit" asp-route-id="@f.Id" class="btn btn-outline-warning btn-sm">
+                        <i class="bi bi-pencil me-1"></i>Modifier
+                    </a>
+                    <a asp-action="Delete" asp-route-id="@f.Id" class="btn btn-outline-danger btn-sm">
+                        <i class="bi bi-trash me-1"></i>Supprimer
+                    </a>
+                </div>
+            </div>
+        </div>
+    }
+</div>

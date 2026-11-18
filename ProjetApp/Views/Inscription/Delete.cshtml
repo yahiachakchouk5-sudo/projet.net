@@ -1,0 +1,38 @@
+@model ProjetApp.Models.Inscription
+@{ ViewData["Title"] = "Supprimer Inscription"; }
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card border-danger shadow-sm">
+            <div class="card-header bg-danger text-white">
+                <h5 class="mb-0"><i class="bi bi-trash me-2"></i>Confirmer la suppression</h5>
+                <small>Suppression via ADO.NET</small>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-warning">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                    Voulez-vous vraiment supprimer cette inscription ?
+                </div>
+                <dl class="row">
+                    <dt class="col-sm-5">Étudiant</dt>
+                    <dd class="col-sm-7">@Model.Etudiant?.Nom @Model.Etudiant?.Prenom</dd>
+                    <dt class="col-sm-5">Formation</dt>
+                    <dd class="col-sm-7">@Model.Formation?.Titre</dd>
+                    <dt class="col-sm-5">Date inscription</dt>
+                    <dd class="col-sm-7">@Model.DateInscription.ToShortDateString()</dd>
+                    <dt class="col-sm-5">Statut</dt>
+                    <dd class="col-sm-7">@Model.Statut</dd>
+                </dl>
+            </div>
+            <div class="card-footer d-flex gap-2">
+                <form asp-action="Delete">
+                    <input type="hidden" asp-for="Id" />
+                    <button type="submit" class="btn btn-danger">
+                        <i class="bi bi-trash me-1"></i>Supprimer
+                    </button>
+                </form>
+                <a asp-action="Index" class="btn btn-secondary">Annuler</a>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,72 @@
+@model ProjetApp.Models.Formation
+@{ ViewData["Title"] = "Nouvelle Formation"; }
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0"><i class="bi bi-plus-circle me-2"></i>Nouvelle Formation</h5>
+            </div>
+            <div class="card-body">
+                <form asp-action="Create" method="post">
+                    @Html.AntiForgeryToken()
+                    <div asp-validation-summary="All" class="alert alert-danger" style="display:none"></div>
+
+                    <div class="mb-3">
+                        <label asp-for="Titre" class="form-label fw-semibold"></label>
+                        <input asp-for="Titre" class="form-control" placeholder="Ex: ASP.NET MVC Avancé" />
+                        <span asp-validation-for="Titre" class="text-danger small"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Description" class="form-label fw-semibold"></label>
+                        <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+                        <span asp-validation-for="Description" class="text-danger small"></span>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="DateDebut" class="form-label fw-semibold"></label>
+                            <input asp-for="DateDebut" class="form-control" type="date" />
+                            <span asp-validation-for="DateDebut" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="DateFin" class="form-label fw-semibold"></label>
+                            <input asp-for="DateFin" class="form-control" type="date" />
+                            <span asp-validation-for="DateFin" class="text-danger small"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label asp-for="Duree" class="form-label fw-semibold"></label>
+                            <input asp-for="Duree" class="form-control" type="number" min="1" />
+                            <span asp-validation-for="Duree" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label asp-for="NombrePlaces" class="form-label fw-semibold"></label>
+                            <input asp-for="NombrePlaces" class="form-control" type="number" min="1" />
+                            <span asp-validation-for="NombrePlaces" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label asp-for="Salle" class="form-label fw-semibold"></label>
+                            <input asp-for="Salle" class="form-control" placeholder="Ex: Salle A1" />
+                            <span asp-validation-for="Salle" class="text-danger small"></span>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="FormateurId" class="form-label fw-semibold"></label>
+                        <select asp-for="FormateurId" asp-items="ViewBag.FormateurId" class="form-select">
+                            <option value="">-- Sélectionner un formateur --</option>
+                        </select>
+                        <span asp-validation-for="FormateurId" class="text-danger small"></span>
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-save me-1"></i>Enregistrer
+                        </button>
+                        <a asp-action="Index" class="btn btn-secondary">Annuler</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

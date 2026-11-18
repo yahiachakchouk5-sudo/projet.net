@@ -1,0 +1,56 @@
+@model ProjetApp.Models.Inscription
+@{ ViewData["Title"] = "Modifier Inscription"; }
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-warning text-dark">
+                <h5 class="mb-0"><i class="bi bi-pencil me-2"></i>Modifier Inscription</h5>
+                <small>Mise à jour via ADO.NET</small>
+            </div>
+            <div class="card-body">
+                <form asp-action="Edit">
+                    <input type="hidden" asp-for="Id" />
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                    <div class="mb-3">
+                        <label asp-for="EtudiantId" class="form-label fw-semibold"></label>
+                        <select asp-for="EtudiantId" asp-items="ViewBag.EtudiantId" class="form-select">
+                            <option value="">-- Sélectionner un étudiant --</option>
+                        </select>
+                        <span asp-validation-for="EtudiantId" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="FormationId" class="form-label fw-semibold"></label>
+                        <select asp-for="FormationId" asp-items="ViewBag.FormationId" class="form-select">
+                            <option value="">-- Sélectionner une formation --</option>
+                        </select>
+                        <span asp-validation-for="FormationId" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="DateInscription" class="form-label fw-semibold"></label>
+                        <input asp-for="DateInscription" class="form-control" type="date" />
+                        <span asp-validation-for="DateInscription" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Statut" class="form-label fw-semibold"></label>
+                        <select asp-for="Statut" asp-items="ViewBag.Statuts" class="form-select">
+                            <option value="">-- Choisir un statut --</option>
+                        </select>
+                        <span asp-validation-for="Statut" class="text-danger small"></span>
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-warning">
+                            <i class="bi bi-save me-1"></i>Enregistrer
+                        </button>
+                        <a asp-action="Index" class="btn btn-secondary">Annuler</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

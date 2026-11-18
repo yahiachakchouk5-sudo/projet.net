@@ -1,0 +1,98 @@
+@model ProjetApp.Models.Formation
+@{ ViewData["Title"] = Model.Titre; }
+
+<nav aria-label="breadcrumb" class="mb-3">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a asp-action="Index">Formations</a></li>
+        <li class="breadcrumb-item active">@Model.Titre</li>
+    </ol>
+</nav>
+
+<div class="row g-4">
+    <!-- Infos Formation -->
+    <div class="col-md-8">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0"><i class="bi bi-book me-2"></i>@Model.Titre</h4>
+            </div>
+            <div class="card-body">
+                <dl class="row">
+                    <dt class="col-sm-3">Description</dt>
+                    <dd class="col-sm-9">@Model.Description</dd>
+                    <dt class="col-sm-3">Formateur</dt>
+                    <dd class="col-sm-9">@Model.Formateur?.Nom @Model.Formateur?.Prenom
+                        <small class="text-muted">– @Model.Formateur?.Specialite</small>
+                    </dd>
+                    <dt class="col-sm-3">Durée</dt>
+                    <dd class="col-sm-9">@Model.Duree heures</dd>
+                    <dt class="col-sm-3">Salle</dt>
+                    <dd class="col-sm-9">@Model.Salle</dd>
+                    <dt class="col-sm-3">Date début</dt>
+                    <dd class="col-sm-9">@Model.DateDebut.ToLongDateString()</dd>
+                    <dt class="col-sm-3">Date fin</dt>
+                    <dd class="col-sm-9">@Model.DateFin.ToLongDateString()</dd>
+                    <dt class="col-sm-3">Places</dt>
+                    <dd class="col-sm-9">
+                        @{var dispo = Model.NombrePlaces - (Model.Inscriptions?.Count ?? 0);}
+                        <span class="badge @(dispo > 0 ? "bg-success" : "bg-danger")">
+                            @dispo / @Model.NombrePlaces disponible(s)
+                        </span>
+                    </dd>
+                </dl>
+            </div>
+            <div class="card-footer d-flex gap-2">
+                <a asp-action="Index" class="btn btn-secondary">
+                    <i class="bi bi-arrow-left me-1"></i>Retour
+                </a>
+                @if (dispo > 0)
+                {
+                    <a asp-controller="Inscription" asp-action="Create" asp-route-formationId="@Model.Id"
+                       class="btn btn-success">
+                        <i class="bi bi-person-plus me-1"></i>S'inscrire
+                    </a>
+                }
+                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">
+                    <i class="bi bi-pencil me-1"></i>Modifier
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Liste des inscrits -->
+    <div class="col-md-4">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-light">
+                <h6 class="mb-0"><i class="bi bi-people me-2"></i>Étudiants inscrits
+                    <span class="badge bg-primary ms-1">@(Model.Inscriptions?.Count ?? 0)</span>
+                </h6>
+            </div>
+            <ul class="list-group list-group-flush">
+                @if (Model.Inscriptions == null || !Model.Inscriptions.Any())
+                {
+                    <li class="list-group-item text-muted small">Aucun inscrit</li>
+                }
+                else
+                {
+                    @foreach (var insc in Model.Inscriptions)
+                    {
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span>
+                                <i class="bi bi-person-circle me-1 text-primary"></i>
+                                @insc.Etudiant?.Nom @insc.Etudiant?.Prenom
+                            </span>
+                            <form asp-controller="Inscription" asp-action="SeDesinscrire" method="post" class="d-inline">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="inscriptionId" value="@insc.Id" />
+                                <input type="hidden" name="formationId"   value="@Model.Id" />
+                                <button type="submit" class="btn btn-outline-danger btn-sm"
+                                        onclick="return confirm('Confirmer la désinscription ?')">
+                                    <i class="bi bi-x"></i>
+                                </button>
+                            </form>
+                        </li>
+                    }
+                }
+            </ul>
+        </div>
+    </div>
+</div>

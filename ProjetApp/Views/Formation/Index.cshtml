@@ -1,0 +1,106 @@
+@model IEnumerable<ProjetApp.Models.Formation>
+@{ ViewData["Title"] = "Formations du mois"; }
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2 class="mb-0"><i class="bi bi-calendar-event text-primary me-2"></i>Formations</h2>
+        <small class="text-muted">@DateTime.Now.ToString("MMMM yyyy")</small>
+    </div>
+    <a asp-action="Create" class="btn btn-primary">
+        <i class="bi bi-plus-circle me-1"></i>Nouvelle Formation
+    </a>
+</div>
+
+<!-- Filtre par mois -->
+<form asp-controller="Formation" asp-action="Toutes" method="get"
+      class="d-flex gap-2 align-items-center mb-3">
+    <select name="mois" class="form-select form-select-sm" style="width:150px">
+        @{
+            var moisActuel = ViewData["MoisSelectionne"]?.ToString();
+        }
+        <option value="1" selected="@(moisActuel == "1" ? "selected" : null)">Janvier</option>
+        <option value="2" selected="@(moisActuel == "2" ? "selected" : null)">Février</option>
+        <option value="3" selected="@(moisActuel == "3" ? "selected" : null)">Mars</option>
+        <option value="4" selected="@(moisActuel == "4" ? "selected" : null)">Avril</option>
+        <option value="5" selected="@(moisActuel == "5" ? "selected" : null)">Mai</option>
+        <option value="6" selected="@(moisActuel == "6" ? "selected" : null)">Juin</option>
+        <option value="7" selected="@(moisActuel == "7" ? "selected" : null)">Juillet</option>
+        <option value="8" selected="@(moisActuel == "8" ? "selected" : null)">Août</option>
+        <option value="9" selected="@(moisActuel == "9" ? "selected" : null)">Septembre</option>
+        <option value="10" selected="@(moisActuel == "10" ? "selected" : null)">Octobre</option>
+        <option value="11" selected="@(moisActuel == "11" ? "selected" : null)">Novembre</option>
+        <option value="12" selected="@(moisActuel == "12" ? "selected" : null)">Décembre</option>
+    </select>
+
+    <select name="annee" class="form-select form-select-sm" style="width:100px">
+        @{
+            var anneeActuelle = ViewData["AnneeSelectionnee"]?.ToString();
+        }
+        <option value="2025" selected="@(anneeActuelle == "2025" ? "selected" : null)">2025</option>
+        <option value="2026" selected="@(anneeActuelle == "2026" ? "selected" : null)">2026</option>
+        <option value="2027" selected="@(anneeActuelle == "2027" ? "selected" : null)">2027</option>
+    </select>
+    <button type="submit" class="btn btn-primary btn-sm">
+        <i class="bi bi-filter me-1"></i>Filtrer
+    </button>
+</form>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">
+        <i class="bi bi-info-circle me-2"></i>Aucune formation disponible pour ce mois.
+        <a asp-action="Toutes" class="alert-link ms-2">Voir toutes les formations</a>
+    </div>
+}
+
+<div class="row row-cols-1 row-cols-md-3 g-4">
+    @foreach (var f in Model)
+    {
+        var placesDisponibles = f.NombrePlaces - (f.Inscriptions?.Count ?? 0);
+        <div class="col">
+            <div class="card h-100 shadow-sm border-0">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title mb-0">
+                        <i class="bi bi-book me-2"></i>@f.Titre
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <p class="text-muted small mb-2">@f.Description</p>
+                    <ul class="list-unstyled">
+                        <li><i class="bi bi-person-badge text-primary me-2"></i>
+                            <strong>@f.Formateur?.Nom @f.Formateur?.Prenom</strong>
+                        </li>
+                        <li><i class="bi bi-clock text-primary me-2"></i>
+                            Durée : @f.Duree heures
+                        </li>
+                        <li><i class="bi bi-geo-alt text-primary me-2"></i>
+                            Salle : @f.Salle
+                        </li>
+                        <li><i class="bi bi-calendar text-primary me-2"></i>
+                            Du @f.DateDebut.ToShortDateString() au @f.DateFin.ToShortDateString()
+                        </li>
+                    </ul>
+                    @if (placesDisponibles > 0)
+                    {
+                        <span class="badge bg-success">@placesDisponibles place(s) disponible(s)</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-danger">Complet</span>
+                    }
+                </div>
+                <div class="card-footer bg-transparent d-flex gap-2">
+                    <a asp-action="Details" asp-route-id="@f.Id" class="btn btn-outline-primary btn-sm">
+                        <i class="bi bi-eye me-1"></i>Détails
+                    </a>
+                    <a asp-action="Edit" asp-route-id="@f.Id" class="btn btn-outline-warning btn-sm">
+                        <i class="bi bi-pencil"></i>
+                    </a>
+                    <a asp-action="Delete" asp-route-id="@f.Id" class="btn btn-outline-danger btn-sm">
+                        <i class="bi bi-trash"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
